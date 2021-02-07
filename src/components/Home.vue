@@ -1,16 +1,27 @@
 <template>
-  <div>User info</div>
+  <div>User info {{ userData }}</div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
-  name: 'home',
+  name: 'Home',
 
   computed: {
     ...mapState([
       'user',
+      'userData',
+    ]),
+  },
+
+  created() {
+    this.getUserData();
+  },
+
+  methods: {
+    ...mapActions([
+      'getUserData',
     ]),
   },
 };
