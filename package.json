@@ -20,6 +20,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^7.5.0",
+    "husky": "^5.0.8",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -40,5 +41,10 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run build && npm run lint"
+    }
+  }
 }
