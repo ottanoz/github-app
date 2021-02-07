@@ -1,20 +1,54 @@
 <template>
   <div id="app">
-    <img
-      alt="Vue logo"
-      src="./assets/logo.png"
-    >
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    Welcome,
+    <div v-if="!hasUser">
+      <form @submit="setGithubUser()">
+        <input type="text" name="githubUser" id="githubUser" v-model.trim="githubUser">
+        <button type="submit">Go!</button>
+      </form>
+    </div>
+    <div v-else>
+      {{ user }}
+    </div>
+    <Home v-if="hasUser"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { mapState, mapMutations } from 'vuex';
+import Home from './components/Home.vue';
 
 export default {
   name: 'App',
+
   components: {
-    HelloWorld,
+    Home,
+  },
+
+  data() {
+    return {
+      githubUser: '',
+    };
+  },
+
+  computed: {
+    ...mapState([
+      'user',
+    ]),
+
+    hasUser() {
+      return this.user !== '';
+    },
+  },
+
+  methods: {
+    ...mapMutations([
+      'setUser',
+    ]),
+
+    setGithubUser() {
+      this.setUser(this.githubUser);
+    },
   },
 };
 </script>
