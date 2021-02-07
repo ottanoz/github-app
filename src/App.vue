@@ -1,59 +1,32 @@
 <template>
   <div id="app">
-    Welcome,
-    <div v-if="!hasUser">
-      <form @submit="setGithubUser()">
-        <input type="text" name="githubUser" id="githubUser" v-model.trim="githubUser">
-        <button type="submit">Go!</button>
-      </form>
-    </div>
-    <div v-else>
-      {{ user }}
-    </div>
-    <Home v-if="hasUser"/>
+    <Header/>
+    <Followers v-if="hasUser"/>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import Home from './components/Home.vue';
+import { mapGetters } from 'vuex';
+import Header from './components/Header.vue';
+import Followers from './components/Followers.vue';
 
 export default {
   name: 'App',
 
   components: {
-    Home,
-  },
-
-  data() {
-    return {
-      githubUser: '',
-    };
+    Header,
+    Followers,
   },
 
   computed: {
-    ...mapState([
-      'user',
+    ...mapGetters([
+      'hasUser',
     ]),
-
-    hasUser() {
-      return this.user !== '';
-    },
-  },
-
-  methods: {
-    ...mapMutations([
-      'setUser',
-    ]),
-
-    setGithubUser() {
-      this.setUser(this.githubUser);
-    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
