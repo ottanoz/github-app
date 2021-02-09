@@ -1,5 +1,6 @@
-# github-app
-
+# GitHub App
+Insert your user and see your profile, followers list and repo informations.
+Click on a follower to see his informations.
 ## Project setup
 ```
 npm install
