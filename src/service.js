@@ -8,4 +8,8 @@ export default {
   fetchUserFollowers(userName) {
     return axios.get(`https://api.github.com/users/${userName}/followers`);
   },
+
+  fetchUserRepos(userName) {
+    return axios.get(`https://api.github.com/users/${userName}/repos`);
+  },
 };

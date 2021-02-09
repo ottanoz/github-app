@@ -1,14 +1,21 @@
 <template>
   <div id="app">
-    <Header/>
-    <Followers v-if="hasUser"/>
+    <template v-if="loading">
+      <img src="./assets/loading.gif" alt="">
+    </template>
+    <template v-else>
+      <Header/>
+      <Followers v-if="hasUser"/>
+      <Repos v-if="hasUser"/>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import Header from './components/Header.vue';
 import Followers from './components/Followers.vue';
+import Repos from './components/Repos.vue';
 
 export default {
   name: 'App',
@@ -16,11 +23,16 @@ export default {
   components: {
     Header,
     Followers,
+    Repos,
   },
 
   computed: {
     ...mapGetters([
       'hasUser',
+    ]),
+
+    ...mapState([
+      'loading',
     ]),
   },
 };

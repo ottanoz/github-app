@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     user: '',
     userData: {},
-    userFollowers: {},
+    userFollowers: [],
+    userRepos: [],
+    loading: false,
   },
   mutations: {
     setUser(state, user) {
@@ -23,16 +25,28 @@ export default new Vuex.Store({
       // eslint-disable-next-line no-param-reassign
       state.userFollowers = data;
     },
+    setUserRepos(state, data) {
+      // eslint-disable-next-line no-param-reassign
+      state.userRepos = data;
+    },
+    setLoading(state, flag) {
+      // eslint-disable-next-line no-param-reassign
+      state.loading = flag;
+    },
   },
   actions: {
     async fetchUserData({ state, commit, dispatch }, userName) {
+      commit('setLoading', true);
       commit('setUser', userName);
       try {
         const { data } = await service.fetchUserData(state.user);
         commit('setUserData', data);
-        dispatch('fetchUserFollowers');
+        await dispatch('fetchUserFollowers');
+        await dispatch('fetchUserRepos');
       } catch (e) {
         throw new Error(e);
+      } finally {
+        commit('setLoading', false);
       }
     },
     async fetchUserFollowers({ state, commit }) {
@@ -43,9 +57,18 @@ export default new Vuex.Store({
         throw new Error(e);
       }
     },
+    async fetchUserRepos({ state, commit }) {
+      try {
+        const { data } = await service.fetchUserRepos(state.user);
+        commit('setUserRepos', data);
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
   },
   getters: {
-    getUserFollowers: (state) => state.userFollowers || [],
     hasUser: (state) => state.user !== '',
+    getUserFollowers: (state) => state.userFollowers || [],
+    getUserRepos: (state) => state.userRepos || [],
   },
 });
